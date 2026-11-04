@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lucas-rayssa-v4';
+const CACHE_NAME = 'lucas-rayssa-v5';
 const assets = [
   './',
   './index.html',
