@@ -1,34 +1,41 @@
-// app.js (trecho para carregar a galeria)
-function carregarGaleria() {
-  const transaction = db.transaction(['midias'], 'readonly');
-  const store = transaction.objectStore('midias');
-  const request = store.getAll();
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucas & Rayssa</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-  request.onsuccess = (e) => {
-    const midias = e.target.result;
-    const galeriaDiv = document.getElementById('galeria');
-    galeriaDiv.innerHTML = ''; // Limpa a galeria
+  <header>
+    <h1>Lucas & Rayssa</h1>
+    <p>Juntos há</p>
+    <div class="contador"><span id="dias">0</span> dias</div>
+    <p style="font-size: 0.8rem; opacity: 0.7;">(Desde 04/09)</p>
+  </header>
 
-    midias.forEach((midia) => {
-      const figure = document.createElement('figure');
-      const url = URL.createObjectURL(midia.arquivo); // Cria uma URL para o arquivo
+  <section>
+    <h2 style="margin-bottom: 20px; color: #ffd1e1;">Nossa Galeria</h2>
+    <div id="galeria" class="grid-midias">
+      <!-- As fotos e vídeos aparecerão aqui automaticamente -->
+    </div>
+  </section>
 
-      if (midia.tipo === 'foto') {
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = midia.legenda || 'Nossa foto';
-        figure.appendChild(img);
-      } else if (midia.tipo === 'video') {
-        const video = document.createElement('video');
-        video.src = url;
-        video.controls = true;
-        figure.appendChild(video);
-      }
+  <section style="margin-top: 40px;">
+    <h2 style="margin-bottom: 20px; color: #ffd1e1;">Nossas Músicas</h2>
+    <div id="musicas">
+      <!-- Os vídeos do YouTube aparecerão aqui -->
+    </div>
+  </section>
 
-      const caption = document.createElement('figcaption');
-      caption.textContent = midia.legenda || '';
-      figure.appendChild(caption);
-      galeriaDiv.appendChild(figure);
-    });
-  };
-}
+  <!-- Registra o PWA para virar app -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
