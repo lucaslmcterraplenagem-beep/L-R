@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lucas & Rayssa</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 
@@ -18,24 +18,19 @@
 
   <section>
     <h2 style="margin-bottom: 20px; color: #ffd1e1;">Nossa Galeria</h2>
-    <div id="galeria" class="grid-midias">
-      <!-- As fotos e vídeos aparecerão aqui automaticamente -->
-    </div>
+    <div id="galeria" class="grid-midias"></div>
   </section>
 
   <section style="margin-top: 40px;">
     <h2 style="margin-bottom: 20px; color: #ffd1e1;">Nossas Músicas</h2>
-    <div id="musicas">
-      <!-- Os vídeos do YouTube aparecerão aqui -->
-    </div>
+    <div id="musicas"></div>
   </section>
 
-  <!-- Registra o PWA para virar app -->
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
+      navigator.serviceWorker.register('./sw.js');
     }
   </script>
-  <script src="app.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
