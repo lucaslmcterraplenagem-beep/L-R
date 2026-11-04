@@ -1,17 +1,27 @@
+// app.js (versão corrigida)
 let db;
 
-// Conecta ao banco de dados (o mesmo que o admin.js criou)
-const request = indexedDB.open('PresenteDB', 1);
+// Conecta ao banco na VERSÃO 2 (igual ao admin.js)
+const request = indexedDB.open('PresenteDB', 2);
 
 request.onsuccess = (e) => {
   db = e.target.result;
+  console.log("App conectado ao banco (v2)");
   carregarGaleria();
   carregarMusicas();
   iniciarContador();
 };
 
+request.onerror = (e) => {
+  console.error("Erro ao abrir o banco:", e.target.error);
+  // Se der erro, ainda tenta iniciar o contador
+  iniciarContador();
+};
+
 // Puxa as fotos e vídeos
 function carregarGaleria() {
+  if (!db) return; // Segurança extra
+  
   const transaction = db.transaction(['midias'], 'readonly');
   const store = transaction.objectStore('midias');
   const req = store.getAll();
@@ -65,7 +75,9 @@ function carregarMusicas() {
 
 // Contador de dias (04/09/2024)
 function iniciarContador() {
-  const dataInicio = new Date('2024-09-04T00:00:00'); // ALTERE AQUI SE PRECISAR
+  // Se a data for 04/09/2024, os dias serão positivos. 
+  // Se você quis dizer 04/09/2026, o valor será negativo até a data chegar.
+  const dataInicio = new Date('2024-09-04T00:00:00'); 
   
   function atualizar() {
     const hoje = new Date();
@@ -75,5 +87,5 @@ function iniciarContador() {
   }
   
   atualizar();
-  setInterval(atualizar, 60000); // Atualiza a cada minuto
+  setInterval(atualizar, 60000);
 }
