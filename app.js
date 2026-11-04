@@ -16,11 +16,10 @@ request.onsuccess = (e) => {
   db = e.target.result;
   console.log("App conectado ao banco (v3)");
   
-  // Só chama as funções se o banco tiver as tabelas criadas
   if (db.objectStoreNames.contains('midias')) {
     carregarGaleria();
   } else {
-    console.warn("Tabela 'midias' ainda não existe. Vá no admin.html primeiro.");
+    console.warn("Tabela 'midias' ainda não existe.");
   }
   
   carregarMusicas();
@@ -41,6 +40,8 @@ function carregarGaleria() {
   req.onsuccess = (e) => {
     const midias = e.target.result;
     const galeriaDiv = document.getElementById('galeria');
+    if (!galeriaDiv) return; // Proteção caso a div não exista
+
     galeriaDiv.innerHTML = '';
 
     midias.forEach((midia) => {
@@ -70,6 +71,8 @@ function carregarGaleria() {
 function carregarMusicas() {
   const links = JSON.parse(localStorage.getItem('musicasYoutube') || '[]');
   const container = document.getElementById('musicas');
+  if (!container) return;
+
   container.innerHTML = '';
 
   links.forEach((link) => {
@@ -85,13 +88,14 @@ function carregarMusicas() {
 }
 
 function iniciarContador() {
-  const dataInicio = new Date('2024-09-04T00:00:00'); 
+  const dataInicio = new Date('2024-09-04T00:00:00'); // Data de vocês
   
   function atualizar() {
     const hoje = new Date();
     const diffMs = hoje - dataInicio;
     const dias = Math.floor(diffMs / 86400000);
-    document.getElementById('dias').textContent = dias;
+    const elDias = document.getElementById('dias');
+    if (elDias) elDias.textContent = dias;
   }
   
   atualizar();
