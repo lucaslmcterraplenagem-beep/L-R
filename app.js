@@ -7,6 +7,13 @@ const request = indexedDB.open('PresenteDB', 2);
 request.onsuccess = (e) => {
   db = e.target.result;
   console.log("App conectado ao banco (v2)");
+
+  // Força o fechamento da conexão antiga se a versão do banco mudar
+  db.onversionchange = () => {
+    db.close();
+    alert("O banco de dados foi atualizado. Por favor, recarregue a página.");
+  };
+
   carregarGaleria();
   carregarMusicas();
   iniciarContador();
