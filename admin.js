@@ -37,3 +37,46 @@ function salvarMidia(arquivo, tipo, legenda) {
     carregarGaleria(); // Atualiza a lista na tela
   };
 }
+// Exemplo de link: https://www.youtube.com/watch?v=ID_DO_VIDEO
+function extrairIdYoutube(url) {
+  const regex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
+
+function carregarMusicas() {
+  const links = JSON.parse(localStorage.getItem('musicasYoutube') || '[]');
+  const container = document.getElementById('musicas');
+  container.innerHTML = '';
+
+  links.forEach((link) => {
+    const id = extrairIdYoutube(link);
+    if (!id) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'youtube-wrapper'; // CSS com aspect-ratio 16/9
+    wrapper.innerHTML = `
+      <iframe src="https://www.youtube.com/embed/${id}"
+              title="Música do casal"
+              frameborder="0"
+              allowfullscreen>
+      </iframe>
+    `;
+    container.appendChild(wrapper);
+  });
+}
+.youtube-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
+  margin-bottom: 16px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.youtube-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
