@@ -1,0 +1,34 @@
+// app.js (trecho para carregar a galeria)
+function carregarGaleria() {
+  const transaction = db.transaction(['midias'], 'readonly');
+  const store = transaction.objectStore('midias');
+  const request = store.getAll();
+
+  request.onsuccess = (e) => {
+    const midias = e.target.result;
+    const galeriaDiv = document.getElementById('galeria');
+    galeriaDiv.innerHTML = ''; // Limpa a galeria
+
+    midias.forEach((midia) => {
+      const figure = document.createElement('figure');
+      const url = URL.createObjectURL(midia.arquivo); // Cria uma URL para o arquivo
+
+      if (midia.tipo === 'foto') {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = midia.legenda || 'Nossa foto';
+        figure.appendChild(img);
+      } else if (midia.tipo === 'video') {
+        const video = document.createElement('video');
+        video.src = url;
+        video.controls = true;
+        figure.appendChild(video);
+      }
+
+      const caption = document.createElement('figcaption');
+      caption.textContent = midia.legenda || '';
+      figure.appendChild(caption);
+      galeriaDiv.appendChild(figure);
+    });
+  };
+}
