@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel do Lucas - Administração</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #1a0b12; color: #fff; padding: 20px; font-family: sans-serif; }
+    .admin-box { max-width: 500px; margin: 0 auto; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; }
+    input, button { width: 100%; margin-bottom: 15px; padding: 10px; border-radius: 8px; border: none; }
+    button { background: #ff6fa5; color: #fff; font-weight: bold; cursor: pointer; }
+    a { color: #ff6fa5; display: block; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="admin-box">
+    <h2>Painel de Mídia (Lucas)</h2>
+    
+    <label>Tipo de Mídia:</label>
+    <select id="tipoMidia">
+      <option value="foto">Foto</option>
+      <option value="video">Vídeo</option>
+    </select>
+
+    <label>Legenda (ex: Nosso primeiro encontro):</label>
+    <input type="text" id="legendaMidia" placeholder="Digite a legenda..." />
+
+    <label>Selecione o arquivo:</label>
+    <input type="file" id="arquivoMidia" accept="image/*,video/*" />
+
+    <button onclick="processarUpload()">Salvar no App</button>
+    
+    <hr />
+    <h3>Adicionar Música do YouTube</h3>
+    <input type="text" id="linkYoutube" placeholder="Cole o link do YouTube aqui" />
+    <button onclick="salvarMusica()">Salvar Música</button>
+
+    <a href="index.html">⬅️ Voltar para o App Principal</a>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    // Função que pega os dados da tela e manda pro admin.js salvar no banco
+    function processarUpload() {
+      const tipo = document.getElementById('tipoMidia').value;
+      const legenda = document.getElementById('legendaMidia').value;
+      const arquivo = document.getElementById('arquivoMidia').files[0];
+
+      if (!arquivo) {
+        alert("Escolha um arquivo primeiro!");
+        return;
+      }
+      salvarMidia(arquivo, tipo, legenda);
+    }
+
+    // Função para salvar os links do YouTube
+    function salvarMusica() {
+      const link = document.getElementById('linkYoutube').value;
+      if (!link) return alert("Cole um link válido!");
+
+      let links = JSON.parse(localStorage.getItem('musicasYoutube') || '[]');
+      links.push(link);
+      localStorage.setItem('musicasYoutube', JSON.stringify(links));
+      
+      alert("Música salva com sucesso!");
+      document.getElementById('linkYoutube').value = '';
+    }
+  </script>
+</body>
+</html>
